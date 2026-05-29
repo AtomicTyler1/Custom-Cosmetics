@@ -1,0 +1,11 @@
+{
+  "name": "com.atomic.customcosmetics",
+  "version": "1.0.0",
+  "displayName": "Crashout Crew Cosmetics",
+  "description": "A package to help you create crashout crew custom cosmetics",
+  "unity": "2022.3",
+  "author": {
+    "name": "Atomic",
+    "email": "admin@atomictyler.dev"
+  }
+}

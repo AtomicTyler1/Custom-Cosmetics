@@ -1,0 +1,18 @@
+{
+    "name": "CustomCosmetics.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:31836a201f4c6e243ae50ba7fac1493c"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
