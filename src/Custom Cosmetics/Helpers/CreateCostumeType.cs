@@ -44,6 +44,12 @@ namespace Custom_Cosmetics.Helpers
             costumeObj.costumeName = name;
             costumeObj.startsUnlocked = true;
 
+            var globalData = Aggro.Core.GlobalScriptableObject<CosmeticGlobalData>.instance;
+            if (globalData != null && globalData.costumes != null && globalData.costumes.Length > 0)
+            {
+                costumeObj.costumeTextures = globalData.costumes[0].costumeTextures;
+            }
+
             Plugin.AddToGlobalRegistry(costumeObj);
 
             return new PlayerCostumeManager.Costume

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
+using System.Linq;
 
 namespace Custom_Cosmetics.Patches
 {
@@ -18,6 +19,8 @@ namespace Custom_Cosmetics.Patches
                 return false;
             }
 
+            EnsureUnlockedIndices(__instance.costumeManager);
+
             var costume = __instance.costumeManager.costumes[index];
             bool isCustom = costume.name.StartsWith("custom-costume-");
 
@@ -29,7 +32,7 @@ namespace Custom_Cosmetics.Patches
 
                 Plugin.SavedCostumeName.Value = costume.name;
 
-                return false;
+                return true;
             }
 
             Plugin.SavedCostumeName.Value = costume.name;
@@ -40,6 +43,8 @@ namespace Custom_Cosmetics.Patches
         [HarmonyPatch(typeof(PlayerCostumeManagerNetwork), nameof(PlayerCostumeManagerNetwork.InitializeCostumeFromSaveData))]
         public static bool SkipIfCustomCostumeSaved(PlayerCostumeManagerNetwork __instance)
         {
+            EnsureUnlockedIndices(__instance.costumeManager);
+
             string savedName = Plugin.SavedCostumeName.Value;
             if (string.IsNullOrEmpty(savedName) || !savedName.StartsWith("custom-costume-"))
                 return true;
@@ -50,11 +55,39 @@ namespace Custom_Cosmetics.Patches
                 {
                     __instance.NetworkcurrentCostumeID = i;
                     __instance.costumeManager.currentCostumeID = i;
-                    return false;
+
+                    // Allow vanilla method to run so it finishes setting up internal UI/network states safely
+                    return true;
                 }
             }
 
             return true;
+        }
+
+        // Helper method to make sure the manager is fully aware of custom indexes
+        private static void EnsureUnlockedIndices(PlayerCostumeManager manager)
+        {
+            if (manager == null || manager.costumes == null) return;
+
+            var indices = manager.unlockedCostumeIndicies?.ToList() ?? new List<int>();
+            bool changed = false;
+
+            for (int i = 0; i < manager.costumes.Length; i++)
+            {
+                if (manager.costumes[i].name != null && manager.costumes[i].name.StartsWith("custom-costume-"))
+                {
+                    if (!indices.Contains(i))
+                    {
+                        indices.Add(i);
+                        changed = true;
+                    }
+                }
+            }
+
+            if (changed)
+            {
+                manager.unlockedCostumeIndicies = indices.ToArray();
+            }
         }
     }
 }
