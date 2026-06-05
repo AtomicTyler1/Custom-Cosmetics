@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/AtomicTyler1/AtomicTyler1/main/banner.png" width="80%">
 </p>
-<h1 align="center">Custom TipTap Videos</h1>
+<h1 align="center">Custom Cosmetics</h1>
 
 <p align="center">Here are my links, it would mean a lot to me if you go a head and check them out :3</p>
 

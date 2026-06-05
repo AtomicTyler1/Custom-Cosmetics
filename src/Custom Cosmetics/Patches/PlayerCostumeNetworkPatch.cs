@@ -28,10 +28,11 @@ namespace Custom_Cosmetics.Patches
             {
                 __instance.NetworkcurrentCostumeID = index;
                 __instance.costumeManager.currentCostumeID = index;
+
+                SyncUnlockedCostumeIndex(__instance.costumeManager, index);
+
                 __instance.costumeManager.UpdateCostume();
-
                 Plugin.SavedCostumeName.Value = costume.name;
-
                 return true;
             }
 
@@ -56,7 +57,7 @@ namespace Custom_Cosmetics.Patches
                     __instance.NetworkcurrentCostumeID = i;
                     __instance.costumeManager.currentCostumeID = i;
 
-                    // Allow vanilla method to run so it finishes setting up internal UI/network states safely
+                    SyncUnlockedCostumeIndex(__instance.costumeManager, i);
                     return true;
                 }
             }
@@ -64,7 +65,6 @@ namespace Custom_Cosmetics.Patches
             return true;
         }
 
-        // Helper method to make sure the manager is fully aware of custom indexes
         private static void EnsureUnlockedIndices(PlayerCostumeManager manager)
         {
             if (manager == null || manager.costumes == null) return;
@@ -87,6 +87,17 @@ namespace Custom_Cosmetics.Patches
             if (changed)
             {
                 manager.unlockedCostumeIndicies = indices.ToArray();
+            }
+        }
+
+        private static void SyncUnlockedCostumeIndex(PlayerCostumeManager manager, int targetCostumeID)
+        {
+            if (manager == null || manager.unlockedCostumeIndicies == null) return;
+
+            int unlockedIndex = Array.IndexOf(manager.unlockedCostumeIndicies, targetCostumeID);
+            if (unlockedIndex != -1)
+            {
+                manager.currentUnlockedCostumeIndex = unlockedIndex;
             }
         }
     }

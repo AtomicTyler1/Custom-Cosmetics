@@ -108,7 +108,6 @@ namespace Custom_Cosmetics
                 var list = globalData.costumes.ToList();
                 list.Add(customObject);
                 globalData.costumes = list.ToArray();
-                Log.LogInfo($"Registered {customObject.name} to Global Cosmetic Data.");
             }
         }
     }
